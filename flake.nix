@@ -19,35 +19,24 @@
           inherit system;
           config.allowUnfree = true;
         };
-        reSnap = inputs.resnap.packages.${system}.reSnap;
-        python = pkgs.python3.withPackages (ps:
-          with ps; [
-            numpy
-            pillow
-            scikit-image
-            scipy
-            opencv4
-          ]);
-        postProcess = pkgs.writeShellScriptBin "postProcess" ''
-          ${python}/bin/python3 ${./postprocess.py} $@
-        '';
+        reSnap = inputs.resnap.packages.${system};
       in rec {
         packages = rec {
           default = obsidian;
           obsidian = pkgs.symlinkJoin {
             name = "obsidian";
-            paths = [pkgs.obsidian reSnap postProcess];
+            paths = [pkgs.obsidian reSnap.reSnap reSnap.postProcess];
             buildInputs = [pkgs.makeWrapper];
             postBuild = ''
               wrapProgram $out/bin/obsidian \
                 --set PATH $PATH:${pkgs.lib.makeBinPath [
-                reSnap
-                postProcess
+                reSnap.reSnap
+                reSnap.postProcess
                 pkgs.openssh
+                pkgs.git
               ]}
             '';
           };
-          inherit postProcess;
         };
 
         apps.default = flake-utils.lib.mkApp {
@@ -56,9 +45,12 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.feh
-            reSnap
-            python
-            postProcess
+            reSnap.reSnap
+            reSnap.postProcess
+          ];
+          inputsFrom = [
+            reSnap.reSnap
+            reSnap.postProcess
           ];
         };
       }
