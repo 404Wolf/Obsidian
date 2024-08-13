@@ -32,18 +32,22 @@
           ${python}/bin/python3 ${./postprocess.py} $@
         '';
       in rec {
-        packages.default = pkgs.symlinkJoin {
-          name = "obsidian";
-          paths = [pkgs.obsidian reSnap postProcess];
-          buildInputs = [pkgs.makeWrapper];
-          postBuild = ''
-            wrapProgram $out/bin/obsidian \
-              --set PATH $PATH:${pkgs.lib.makeBinPath [
-              reSnap
-              postProcess
-              pkgs.openssh
-            ]}
-          '';
+        packages = rec {
+          default = obsidian;
+          obsidian = pkgs.symlinkJoin {
+            name = "obsidian";
+            paths = [pkgs.obsidian reSnap postProcess];
+            buildInputs = [pkgs.makeWrapper];
+            postBuild = ''
+              wrapProgram $out/bin/obsidian \
+                --set PATH $PATH:${pkgs.lib.makeBinPath [
+                reSnap
+                postProcess
+                pkgs.openssh
+              ]}
+            '';
+          };
+          inherit postProcess;
         };
 
         apps.default = flake-utils.lib.mkApp {

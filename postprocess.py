@@ -43,7 +43,7 @@ if __name__ == "__main__":
     data[..., -1] = 255 - data[..., 0]
     img = Image.fromarray(data)
 
-    border_size = 8
+    border_size = 4
     border_color = (0, 0, 0)  # Black color
 
     # Add border to the image
