@@ -74,11 +74,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1723616188,
-        "narHash": "sha256-BSoaM5c2avHlfj+9AhRqyCT3PJGY5A76qTRgfbuNCZE=",
+        "lastModified": 1723705327,
+        "narHash": "sha256-cBblx9eoA6KkTduxN+Vr7x3tVKoCvEgayC+4gyr+/HM=",
         "owner": "404wolf",
         "repo": "nix-resnap",
-        "rev": "31915e63ce346a990bf30f5be43f8a55398df02a",
+        "rev": "37280b7ebf94df6f7cec4fe74a9bb422047e88d6",
         "type": "github"
       },
       "original": {
